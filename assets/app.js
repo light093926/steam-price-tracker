@@ -373,10 +373,32 @@
   }
 
   function sparkline(item) {
-    const pts = (item.series ?? []).filter((p) => Number.isFinite(p.p));
-    if (pts.length < 2) {
+    const raw = (item.series ?? []).filter((p) => Number.isFinite(p.p));
+    if (raw.length < 2) {
       // 只有 1 个点或还没记录时给虚线占位，让用户知道曲线在积累而不是坏了
-      return `<div class="series series--empty"><span>${pts.length ? '价格曲线积累中' : '刚开始记录价格'}</span></div>`;
+      return `<div class="series series--empty"><span>${raw.length ? '价格曲线积累中' : '刚开始记录价格'}</span></div>`;
+    }
+    // 按月取低点：原始调价记录里一次打折就是一根锯齿，压缩到月低点后走势才看得懂
+    const curMonth = new Date().toISOString().slice(0, 7);
+    const byMonth = new Map();
+    for (const p of raw) {
+      const d = Date.parse(p.t ?? '');
+      const key = Number.isFinite(d) ? new Date(d).toISOString().slice(0, 7) : '';
+      if (!Number.isFinite(d)) continue;
+      if (key === curMonth) {
+        byMonth.set(key, Number.isFinite(item.now) ? item.now : p.p);
+        continue;
+      }
+      const cur = byMonth.get(key);
+      if (cur === undefined || p.p < cur) byMonth.set(key, p.p);
+    }
+    const pts = [...byMonth.entries()]
+      .sort(([a], [b]) => a.localeCompare(b))
+      .slice(-12)
+      .map(([t, p]) => ({ t: `${t}-01`, p }));
+
+    if (pts.length < 2) {
+      return `<div class="series series--empty"><span>只剩一个月的记录，等下个月就能画走势</span></div>`;
     }
     const values = pts.map((p) => p.p);
     const min = Math.min(...values);
@@ -393,10 +415,7 @@
       : values.at(-1) > values[0]
         ? 'var(--orange)'
         : 'var(--muted)';
-    const from = Date.parse(pts[0].t ?? '');
-    const to = Date.parse(pts.at(-1).t ?? '');
-    const days = Number.isFinite(from) && Number.isFinite(to) ? (to - from) / 86400000 : 0;
-    const tag = days >= 60 ? '近一年' : '近期走势';
+    const tag = pts.length >= 6 ? '近一年月低' : '近期走势';
     return `<div class="series"><span class="series-tag">${tag}</span><svg viewBox="0 0 100 ${h}" preserveAspectRatio="none">
       <polyline points="${path}" fill="none" stroke="${dropped}" stroke-width="1.6" stroke-linejoin="round" />
     </svg></div>`;
