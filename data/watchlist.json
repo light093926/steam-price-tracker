@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-24T07:45:31.746Z",
+  "updated": "2026-11-24T07:46:16.040Z",
   "items": [
     {
       "appid": 1245620,
@@ -22,6 +22,14 @@
       "name": "空之轨迹 the 2nd",
       "header": "https://cdn.akamai.steamstatic.com/steam/apps/4225980/header.jpg",
       "added": "2026-11-24T07:14:01.442Z",
+      "note": "",
+      "pinned": false
+    },
+    {
+      "appid": 1903340,
+      "name": "光与影：33号远征队",
+      "header": "https://cdn.akamai.steamstatic.com/steam/apps/1903340/header.jpg",
+      "added": "2026-11-24T07:46:16.040Z",
       "note": "",
       "pinned": false
     }
