@@ -1,5 +1,5 @@
 {
-  "generated": "2026-11-24T08:05:46.156Z",
+  "generated": "2026-11-24T08:35:09.816Z",
   "currency": "CNY",
   "itad": true,
   "items": [
@@ -388,12 +388,46 @@
           "p": 18760
         }
       ]
+    },
+    {
+      "appid": 4115450,
+      "name": "影之刃零",
+      "name_en": "Phantom Blade Zero",
+      "header": "https://cdn.akamai.steamstatic.com/steam/apps/4115450/header.jpg",
+      "store_url": "https://store.steampowered.com/app/4115450/",
+      "free": false,
+      "unavailable": false,
+      "now": 26800,
+      "initial": 26800,
+      "cut": 0,
+      "currency": "CNY",
+      "steam_low": {
+        "price": 26800,
+        "at": "2026-08-12"
+      },
+      "global_low": {
+        "price": 26800,
+        "at": "2026-08-12",
+        "shop": "Steam"
+      },
+      "low_source": "steam",
+      "flag": "equal_low",
+      "diff_pct": 0,
+      "stale": false,
+      "note": "",
+      "pinned": false,
+      "series": [
+        {
+          "t": "2026-11-24T08:35:09.816Z",
+          "p": 26800
+        }
+      ]
     }
   ],
   "stats": {
-    "total": 5,
+    "total": 6,
     "on_sale": 2,
-    "at_low": 2,
+    "at_low": 3,
     "new_low": 0
   }
 }
