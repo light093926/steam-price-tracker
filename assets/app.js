@@ -105,7 +105,6 @@
         accept: 'application/vnd.github+json',
         authorization: `Bearer ${token}`,
         'x-github-api-version': '2022-11-28',
-        'cache-control': 'no-cache',
         ...(options.body ? { 'content-type': 'application/json' } : {}),
       },
     });
