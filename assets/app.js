@@ -393,7 +393,11 @@
       : values.at(-1) > values[0]
         ? 'var(--orange)'
         : 'var(--muted)';
-    return `<div class="series" aria-hidden="true"><svg viewBox="0 0 100 ${h}" preserveAspectRatio="none">
+    const from = Date.parse(pts[0].t ?? '');
+    const to = Date.parse(pts.at(-1).t ?? '');
+    const days = Number.isFinite(from) && Number.isFinite(to) ? (to - from) / 86400000 : 0;
+    const tag = days >= 60 ? '近一年' : '近期走势';
+    return `<div class="series"><span class="series-tag">${tag}</span><svg viewBox="0 0 100 ${h}" preserveAspectRatio="none">
       <polyline points="${path}" fill="none" stroke="${dropped}" stroke-width="1.6" stroke-linejoin="round" />
     </svg></div>`;
   }

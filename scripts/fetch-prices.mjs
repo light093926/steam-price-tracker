@@ -19,6 +19,7 @@ const UA = 'steam-price-tracker/1.0 (personal watchlist; GitHub Actions)';
 const CACHE_TTL_MS = 24 * 60 * 60 * 1000; // 史低变化慢，一天一次足够
 const SERIES_POINTS = 720; // 自建价格点上限
 const SERIES_EMBED = 60; // 页面折线图只用最近 60 点
+const SERIES_DAYS = 365; // 从 ITAD 历史里取近一年的调价点画曲线
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
@@ -177,12 +178,14 @@ async function itadGlobalLows(uuids) {
   return map;
 }
 
-/** Steam 单店历史调价日志 → 史低价与发生日期 */
-async function itadSteamHistory(uuid, shopId) {
+/** Steam 单店历史调价日志 → 史低价、发生日期，以及近 SERIES_DAYS 天的价格点（供画曲线） */
+async function itadSteamHistory(uuid, shopId, days = SERIES_DAYS) {
   const params = { id: uuid, country: 'CN', since: '2011-01-01T00:00:00Z' };
   if (shopId) params.shops = String(shopId);
   const log = await itadGet('/games/history/v2', params);
+  const cutoff = Date.now() - days * 24 * 60 * 60 * 1000;
   let best = null;
+  const series = [];
   for (const point of log ?? []) {
     if (shopId && point?.shop?.id !== shopId) continue;
     const price = point?.deal?.price?.amountInt;
@@ -190,8 +193,11 @@ async function itadSteamHistory(uuid, shopId) {
     if (!best || price < best.price) {
       best = { price, at: (point.timestamp ?? '').slice(0, 10) || null };
     }
+    const ts = Date.parse(point.timestamp ?? '');
+    if (Number.isFinite(ts) && ts >= cutoff) series.push({ t: point.timestamp, p: price });
   }
-  return best;
+  series.sort((a, b) => Date.parse(a.t) - Date.parse(b.t));
+  return { best, series };
 }
 
 // ---------------------------------------------------------------- 判定
@@ -265,7 +271,13 @@ async function main() {
     for (const w of watch) {
       const entry = cache[String(w.appid)];
       // 只有「史低也抓过」的缓存才算新鲜，避免史低缺失时被缓存卡住 24 小时
-      if (entry?.uuid && entry.lowChecked && entry.checked && nowMs - Date.parse(entry.checked) < CACHE_TTL_MS) {
+      if (
+        entry?.uuid &&
+        entry.lowChecked &&
+        entry.seriesChecked &&
+        entry.checked &&
+        nowMs - Date.parse(entry.checked) < CACHE_TTL_MS
+      ) {
         fresh.set(w.appid, entry);
       } else {
         stale.set(w.appid, entry ?? {});
@@ -309,15 +321,18 @@ async function main() {
     // 3) Steam 单店史低 + 日期（逐款，缓存 24h）
     await mapLimit([...stale.entries()].filter(([, e]) => e.uuid), 2, async ([appid, e]) => {
       try {
-        const low = await itadSteamHistory(e.uuid, e.shopId);
-        if (low) e.steamLow = low;
+        const hist = await itadSteamHistory(e.uuid, e.shopId);
+        if (hist.best) e.steamLow = hist.best;
         else if (Number.isFinite(e.steamLowFlat)) e.steamLow = { price: e.steamLowFlat, at: null };
+        if (hist.series.length >= 2) e.steamSeries = hist.series;
+        else delete e.steamSeries;
         await sleep(200);
       } catch (err) {
         console.error(`[itad] history ${appid} 失败：${err.message}`);
         if (Number.isFinite(e.steamLowFlat) && !e.steamLow) e.steamLow = { price: e.steamLowFlat, at: null };
       }
-      if (e.steamLow) e.lowChecked = true;
+      e.lowChecked = Boolean(e.steamLow);
+      e.seriesChecked = true;
     });
 
     // 4) 全站史低（批次）
@@ -358,14 +373,22 @@ async function main() {
 
     const verdict = classify({ now: free ? 0 : now, low: steamLow?.price, cut, free });
 
-    // 序列：价格变化时才追加，避免每小时刷一个重复点
+    // 曲线：优先用 ITAD 真实调价历史（近 120 天），没有就退回自建序列。
+    // 自建序列在「价格变化」或「当天首个点」时追加，避免平价游戏永远只有 1 个点。
     const key = String(w.appid);
-    const points = Array.isArray(series[key]) ? series[key] : [];
-    if (Number.isFinite(now) && points.at(-1)?.p !== now) {
-      points.push({ t: stamp, p: now });
-      if (points.length > SERIES_POINTS) points.splice(0, points.length - SERIES_POINTS);
+    const own = Array.isArray(series[key]) ? series[key] : [];
+    if (Number.isFinite(now)) {
+      const last = own.at(-1);
+      const dayChanged = !last || String(last.t).slice(0, 10) !== stamp.slice(0, 10);
+      if (!last || last.p !== now || dayChanged) {
+        own.push({ t: stamp, p: now });
+        if (own.length > SERIES_POINTS) own.splice(0, own.length - SERIES_POINTS);
+      }
+      series[key] = own;
     }
-    if (Number.isFinite(now)) series[key] = points;
+    const itadSeries = Array.isArray(c?.steamSeries) ? c.steamSeries : [];
+    const chart = itadSeries.length >= 2 ? itadSeries.slice() : own.slice();
+    if (Number.isFinite(now) && chart.at(-1)?.p !== now) chart.push({ t: stamp, p: now });
 
     return {
       appid: w.appid,
@@ -387,7 +410,7 @@ async function main() {
       stale: !data, // 本次没拿到数据，沿用旧快照
       note: w.note ?? '',
       pinned: w.pinned === true,
-      series: points.slice(-SERIES_EMBED),
+      series: chart.slice(-SERIES_EMBED),
     };
   });
 

@@ -764,12 +764,23 @@ button {
 }
 
 .series {
+  display: flex;
+  align-items: center;
+  gap: 8px;
   height: 30px;
   margin-top: -2px;
 }
 
+.series-tag {
+  flex: 0 0 auto;
+  font-size: 10.5px;
+  color: var(--faint);
+  white-space: nowrap;
+}
+
 .series svg {
-  width: 100%;
+  flex: 1 1 auto;
+  min-width: 0;
   height: 100%;
   display: block;
 }
