@@ -140,7 +140,7 @@ async function itadLookup(appid) {
   return json?.found && json?.game?.id ? { uuid: json.game.id, title: json.game.title } : null;
 }
 
-/** 返回每款游戏的 Steam 商店当前价 + 商店内史低（无日期） */
+/** 返回每款游戏的 Steam 商店当前价 + 商店内史低（storeLow，无日期） */
 async function itadPrices(uuids) {
   if (!uuids.length) return new Map();
   const json = await itadPost('/games/prices/v3', { country: 'CN' }, uuids);
@@ -152,7 +152,7 @@ async function itadPrices(uuids) {
       deals.find((d) => /store\.steampowered\.com/.test(d?.url ?? ''));
     map.set(entry.id, {
       shopId: steam?.shop?.id ?? null,
-      low: steam?.historyLow?.amountInt ?? null,
+      low: steam?.storeLow?.amountInt ?? steam?.historyLow?.amountInt ?? null,
       price: steam?.price?.amountInt ?? null,
       cut: steam?.cut ?? null,
     });
@@ -181,11 +181,11 @@ async function itadGlobalLows(uuids) {
 async function itadSteamHistory(uuid, shopId) {
   const params = { id: uuid, country: 'CN', since: '2011-01-01T00:00:00Z' };
   if (shopId) params.shops = String(shopId);
-  const log = await itadGet('/games/history/v1', params);
+  const log = await itadGet('/games/history/v2', params);
   let best = null;
   for (const point of log ?? []) {
     if (shopId && point?.shop?.id !== shopId) continue;
-    const price = point?.price?.amountInt;
+    const price = point?.deal?.price?.amountInt;
     if (!Number.isFinite(price)) continue;
     if (!best || price < best.price) {
       best = { price, at: (point.timestamp ?? '').slice(0, 10) || null };
@@ -264,7 +264,8 @@ async function main() {
   if (itadOn) {
     for (const w of watch) {
       const entry = cache[String(w.appid)];
-      if (entry?.uuid && entry.checked && nowMs - Date.parse(entry.checked) < CACHE_TTL_MS) {
+      // 只有「史低也抓过」的缓存才算新鲜，避免史低缺失时被缓存卡住 24 小时
+      if (entry?.uuid && entry.lowChecked && entry.checked && nowMs - Date.parse(entry.checked) < CACHE_TTL_MS) {
         fresh.set(w.appid, entry);
       } else {
         stale.set(w.appid, entry ?? {});
@@ -316,6 +317,7 @@ async function main() {
         console.error(`[itad] history ${appid} 失败：${err.message}`);
         if (Number.isFinite(e.steamLowFlat) && !e.steamLow) e.steamLow = { price: e.steamLowFlat, at: null };
       }
+      if (e.steamLow) e.lowChecked = true;
     });
 
     // 4) 全站史低（批次）
