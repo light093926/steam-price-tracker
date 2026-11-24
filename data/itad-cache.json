@@ -1,4 +1,21 @@
 {
+  "1638220": {
+    "uuid": "018d937f-5503-7255-8087-35c8985e74e7",
+    "title": "Xuan-Yuan Sword: The Scar of the Sky",
+    "shopId": 61,
+    "steamLowFlat": 1560,
+    "steamLow": {
+      "price": 1560,
+      "at": "2026-11-10"
+    },
+    "lowChecked": true,
+    "globalLow": {
+      "price": 1560,
+      "at": "2026-11-10",
+      "shop": "Steam"
+    },
+    "checked": "2026-11-24T07:56:22.084Z"
+  },
   "1903340": {
     "uuid": "018ffe0d-15a7-7247-bb3c-4e5e1980561f",
     "title": "Clair Obscur: Expedition 33",

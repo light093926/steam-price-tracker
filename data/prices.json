@@ -1,5 +1,5 @@
 {
-  "generated": "2026-11-24T07:47:18.073Z",
+  "generated": "2026-11-24T07:56:22.085Z",
   "currency": "CNY",
   "itad": true,
   "items": [
@@ -104,12 +104,46 @@
           "p": 21800
         }
       ]
+    },
+    {
+      "appid": 1638220,
+      "name": "轩辕剑叁外传 天之痕",
+      "name_en": "Xuan-Yuan Sword: The Scar of the Sky",
+      "header": "https://cdn.akamai.steamstatic.com/steam/apps/1638220/header.jpg",
+      "store_url": "https://store.steampowered.com/app/1638220/",
+      "free": false,
+      "unavailable": false,
+      "now": 1560,
+      "initial": 3900,
+      "cut": 60,
+      "currency": "CNY",
+      "steam_low": {
+        "price": 1560,
+        "at": "2026-11-10"
+      },
+      "global_low": {
+        "price": 1560,
+        "at": "2026-11-10",
+        "shop": "Steam"
+      },
+      "low_source": "steam",
+      "flag": "equal_low",
+      "diff_pct": 0,
+      "stale": false,
+      "note": "",
+      "pinned": false,
+      "series": [
+        {
+          "t": "2026-11-24T07:56:22.085Z",
+          "p": 1560
+        }
+      ]
     }
   ],
   "stats": {
-    "total": 3,
-    "on_sale": 0,
-    "at_low": 0,
+    "total": 4,
+    "on_sale": 1,
+    "at_low": 1,
     "new_low": 0
   }
 }
