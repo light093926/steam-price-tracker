@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-24T07:12:36.418Z",
+  "updated": "2026-11-24T07:14:01.442Z",
   "items": [
     {
       "appid": 1245620,
@@ -30,6 +30,14 @@
       "name": "星露谷物语",
       "header": "https://cdn.akamai.steamstatic.com/steam/apps/413150/header.jpg",
       "added": "2026-11-24T06:00:00.000Z",
+      "note": "",
+      "pinned": false
+    },
+    {
+      "appid": 4225980,
+      "name": "空之轨迹 the 2nd",
+      "header": "https://cdn.akamai.steamstatic.com/steam/apps/4225980/header.jpg",
+      "added": "2026-11-24T07:14:01.442Z",
       "note": "",
       "pinned": false
     }
