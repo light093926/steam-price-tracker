@@ -1,1 +1,62 @@
-{}
+{
+  "413150": {
+    "uuid": "018d937e-f835-710c-b95b-928e277b187e",
+    "title": "Stardew Valley",
+    "shopId": 61,
+    "steamLowFlat": null,
+    "globalLow": {
+      "price": 1499,
+      "at": "2023-03-29",
+      "shop": "Steam"
+    },
+    "checked": "2026-11-24T06:58:06.923Z"
+  },
+  "1091500": {
+    "uuid": "018d937f-2997-7131-b8b9-7c8af4825fa8",
+    "title": "Cyberpunk 2077",
+    "shopId": 61,
+    "steamLowFlat": null,
+    "globalLow": {
+      "price": 8900,
+      "at": "2026-06-17",
+      "shop": "GOG"
+    },
+    "checked": "2026-11-24T06:58:06.923Z"
+  },
+  "1245620": {
+    "uuid": "018d937f-590c-728b-ac35-38bcff85f086",
+    "title": "Elden Ring",
+    "shopId": 61,
+    "steamLowFlat": null,
+    "globalLow": {
+      "price": 17880,
+      "at": "2023-12-21",
+      "shop": "Steam"
+    },
+    "checked": "2026-11-24T06:58:06.923Z"
+  },
+  "1426210": {
+    "uuid": "018d937f-4a27-72c8-9837-8ec5e5e92932",
+    "title": "It Takes Two",
+    "shopId": 61,
+    "steamLowFlat": null,
+    "globalLow": {
+      "price": 3960,
+      "at": "2024-12-11",
+      "shop": "Steam"
+    },
+    "checked": "2026-11-24T06:58:06.923Z"
+  },
+  "2358720": {
+    "uuid": "018d937f-7456-7396-b192-9e1866e209bb",
+    "title": "Black Myth: Wukong",
+    "shopId": 61,
+    "steamLowFlat": null,
+    "globalLow": {
+      "price": 18760,
+      "at": "2026-08-11",
+      "shop": "Epic Game Store"
+    },
+    "checked": "2026-11-24T06:58:06.923Z"
+  }
+}

@@ -1,12 +1,12 @@
 {
-  "generated": "2026-11-24T06:20:52.880Z",
+  "generated": "2026-11-24T06:58:06.923Z",
   "currency": "CNY",
-  "itad": false,
+  "itad": true,
   "items": [
     {
       "appid": 1245620,
       "name": "艾尔登法环",
-      "name_en": null,
+      "name_en": "Elden Ring",
       "header": "https://cdn.akamai.steamstatic.com/steam/apps/1245620/header.jpg",
       "store_url": "https://store.steampowered.com/app/1245620/",
       "free": false,
@@ -16,7 +16,11 @@
       "cut": 0,
       "currency": "CNY",
       "steam_low": null,
-      "global_low": null,
+      "global_low": {
+        "price": 17880,
+        "at": "2023-12-21",
+        "shop": "Steam"
+      },
       "low_source": null,
       "flag": "no_data",
       "diff_pct": null,
@@ -33,7 +37,7 @@
     {
       "appid": 2358720,
       "name": "黑神话：悟空",
-      "name_en": null,
+      "name_en": "Black Myth: Wukong",
       "header": "https://cdn.akamai.steamstatic.com/steam/apps/2358720/header.jpg",
       "store_url": "https://store.steampowered.com/app/2358720/",
       "free": false,
@@ -43,7 +47,11 @@
       "cut": 0,
       "currency": "CNY",
       "steam_low": null,
-      "global_low": null,
+      "global_low": {
+        "price": 18760,
+        "at": "2026-08-11",
+        "shop": "Epic Game Store"
+      },
       "low_source": null,
       "flag": "no_data",
       "diff_pct": null,
@@ -60,7 +68,7 @@
     {
       "appid": 1091500,
       "name": "赛博朋克 2077",
-      "name_en": null,
+      "name_en": "Cyberpunk 2077",
       "header": "https://cdn.akamai.steamstatic.com/steam/apps/1091500/header.jpg",
       "store_url": "https://store.steampowered.com/app/1091500/",
       "free": false,
@@ -70,7 +78,11 @@
       "cut": 0,
       "currency": "CNY",
       "steam_low": null,
-      "global_low": null,
+      "global_low": {
+        "price": 8900,
+        "at": "2026-06-17",
+        "shop": "GOG"
+      },
       "low_source": null,
       "flag": "no_data",
       "diff_pct": null,
@@ -87,7 +99,7 @@
     {
       "appid": 1426210,
       "name": "双人成行",
-      "name_en": null,
+      "name_en": "It Takes Two",
       "header": "https://cdn.akamai.steamstatic.com/steam/apps/1426210/header.jpg",
       "store_url": "https://store.steampowered.com/app/1426210/",
       "free": false,
@@ -97,7 +109,11 @@
       "cut": 80,
       "currency": "CNY",
       "steam_low": null,
-      "global_low": null,
+      "global_low": {
+        "price": 3960,
+        "at": "2024-12-11",
+        "shop": "Steam"
+      },
       "low_source": null,
       "flag": "no_data",
       "diff_pct": null,
@@ -114,7 +130,7 @@
     {
       "appid": 413150,
       "name": "星露谷物语",
-      "name_en": null,
+      "name_en": "Stardew Valley",
       "header": "https://cdn.akamai.steamstatic.com/steam/apps/413150/header.jpg",
       "store_url": "https://store.steampowered.com/app/413150/",
       "free": false,
@@ -124,7 +140,11 @@
       "cut": 0,
       "currency": "CNY",
       "steam_low": null,
-      "global_low": null,
+      "global_low": {
+        "price": 1499,
+        "at": "2023-03-29",
+        "shop": "Steam"
+      },
       "low_source": null,
       "flag": "no_data",
       "diff_pct": null,
