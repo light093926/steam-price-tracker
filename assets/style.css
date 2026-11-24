@@ -498,9 +498,9 @@ button {
 }
 
 @keyframes cardIn {
+  /* 只做位移、不碰透明度：动画被冻结时卡片也仍然可见 */
   from {
-    opacity: 0;
-    transform: translateY(7px);
+    transform: translateY(6px);
   }
 }
 
@@ -882,7 +882,6 @@ dialog[open] {
 
 @keyframes dialogIn {
   from {
-    opacity: 0;
     transform: translateY(10px) scale(0.98);
   }
 }
