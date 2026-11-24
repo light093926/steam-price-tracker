@@ -351,7 +351,7 @@
           <span class="price-scale-marker" style="left:${pos.toFixed(1)}%"></span>
         </div>
         <div class="price-scale-ends">
-          <span>史低 ${yen(steam.price)}</span>
+          <span>史低</span>
           <span>${Number.isFinite(item.initial) && item.initial > steam.price ? `原价 ${yen(item.initial)}` : ''}</span>
         </div>
       </div>`;

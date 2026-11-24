@@ -725,7 +725,13 @@ button {
   height: 6px;
   margin: 0 4px;
   border-radius: 999px;
-  background: var(--line-soft);
+  /* 淡色渐变常驻：即使现价就在史低，也能看出这是一条"史低→原价"的轴 */
+  background: linear-gradient(
+    90deg,
+    color-mix(in srgb, var(--green) 26%, transparent),
+    color-mix(in srgb, var(--gold) 26%, transparent) 58%,
+    color-mix(in srgb, var(--orange) 26%, transparent)
+  );
 }
 
 .price-scale-fill {
