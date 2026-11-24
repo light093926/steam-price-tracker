@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-24T07:14:01.442Z",
+  "updated": "2026-11-24T07:32:50.806Z",
   "items": [
     {
       "appid": 1245620,
@@ -39,7 +39,7 @@
       "header": "https://cdn.akamai.steamstatic.com/steam/apps/4225980/header.jpg",
       "added": "2026-11-24T07:14:01.442Z",
       "note": "",
-      "pinned": false
+      "pinned": true
     }
   ]
 }
