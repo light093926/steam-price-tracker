@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-24T07:56:07.646Z",
+  "updated": "2026-11-24T08:02:53.154Z",
   "items": [
     {
       "appid": 2358720,
@@ -30,6 +30,14 @@
       "name": "轩辕剑叁外传 天之痕",
       "header": "https://cdn.akamai.steamstatic.com/steam/apps/1638220/header.jpg",
       "added": "2026-11-24T07:56:07.646Z",
+      "note": "",
+      "pinned": false
+    },
+    {
+      "appid": 1086940,
+      "name": "博德之门3",
+      "header": "https://cdn.akamai.steamstatic.com/steam/apps/1086940/header.jpg",
+      "added": "2026-11-24T08:02:53.154Z",
       "note": "",
       "pinned": false
     }
