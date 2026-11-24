@@ -375,9 +375,11 @@
       .map((p) => ({ t: Date.parse(p.t), p: p.p }))
       .sort((a, b) => a.t - b.t);
 
-    // 末尾补当前价，让最右端始终等于卡片上显示的现价
-    if (Number.isFinite(item.now) && raw.at(-1)?.p !== item.now) {
-      raw.push({ t: Date.now(), p: item.now });
+    // 时间轴永远截止到“现在”。否则最后一次调价会被顶到最右端，看着像刚刚才变价
+    const now = Date.now();
+    const current = Number.isFinite(item.now) ? item.now : raw.at(-1)?.p;
+    if (raw.length && now - raw.at(-1).t > 60 * 60 * 1000 && Number.isFinite(current)) {
+      raw.push({ t: now, p: current });
     }
 
     if (raw.length < 2) {
@@ -436,16 +438,7 @@
 
   function render() {
     const items = currentItems();
-    const stats = state.prices?.stats ?? {};
-    const total = items.length;
-    const sale = items.filter((i) => i.cut > 0 && !i.free).length;
-    const atLow = items.filter((i) => i.flag === 'new_low' || i.flag === 'equal_low').length;
-    const newLow = items.filter((i) => i.flag === 'new_low').length;
 
-    el('stat-total').textContent = total;
-    el('stat-sale').textContent = sale;
-    el('stat-low').textContent = atLow;
-    el('stat-newlow').textContent = newLow;
     el('updated-at').textContent = relativeTime(state.prices?.generated);
     el('source-note').textContent = state.prices?.itad
       ? '史低口径：Steam 单店历史最低（ITAD）'

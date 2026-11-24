@@ -373,47 +373,6 @@ button {
   font-size: 12px;
 }
 
-/* ---------------------------------------------------------------- 概览 */
-
-.summary {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 8px;
-  margin: 14px 0 4px;
-}
-
-.stat {
-  padding: 10px 12px;
-  background: var(--panel);
-  border: 1px solid var(--line-soft);
-  border-radius: 12px;
-  min-width: 0;
-  transition: background-color 0.25s ease, border-color 0.25s ease;
-}
-
-.stat .num {
-  font-size: 20px;
-  font-weight: 700;
-  line-height: 1.2;
-  font-variant-numeric: tabular-nums;
-}
-
-.stat .num.is-hot {
-  color: var(--orange);
-}
-
-.stat .num.is-gold {
-  color: var(--gold);
-}
-
-.stat .k {
-  font-size: 11px;
-  color: var(--muted);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
 /* ---------------------------------------------------------------- 工具栏 */
 
 .toolbar {
@@ -1175,23 +1134,6 @@ dialog::backdrop {
 
   .brand h1 {
     font-size: 15.5px;
-  }
-
-  .summary {
-    grid-template-columns: repeat(4, 1fr);
-    gap: 6px;
-  }
-
-  .stat {
-    padding: 8px 8px 7px;
-  }
-
-  .stat .num {
-    font-size: 16px;
-  }
-
-  .stat .k {
-    font-size: 10px;
   }
 
   .price {
