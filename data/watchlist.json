@@ -1,0 +1,45 @@
+{
+  "updated": "2026-11-24T06:00:00.000Z",
+  "items": [
+    {
+      "appid": 1245620,
+      "name": "艾尔登法环",
+      "header": "https://cdn.akamai.steamstatic.com/steam/apps/1245620/header.jpg",
+      "added": "2026-11-24T06:00:00.000Z",
+      "note": "",
+      "pinned": false
+    },
+    {
+      "appid": 2358720,
+      "name": "黑神话：悟空",
+      "header": "https://cdn.akamai.steamstatic.com/steam/apps/2358720/header.jpg",
+      "added": "2026-11-24T06:00:00.000Z",
+      "note": "",
+      "pinned": false
+    },
+    {
+      "appid": 1091500,
+      "name": "赛博朋克 2077",
+      "header": "https://cdn.akamai.steamstatic.com/steam/apps/1091500/header.jpg",
+      "added": "2026-11-24T06:00:00.000Z",
+      "note": "",
+      "pinned": false
+    },
+    {
+      "appid": 1426210,
+      "name": "双人成行",
+      "header": "https://cdn.akamai.steamstatic.com/steam/apps/1426210/header.jpg",
+      "added": "2026-11-24T06:00:00.000Z",
+      "note": "",
+      "pinned": false
+    },
+    {
+      "appid": 413150,
+      "name": "星露谷物语",
+      "header": "https://cdn.akamai.steamstatic.com/steam/apps/413150/header.jpg",
+      "added": "2026-11-24T06:00:00.000Z",
+      "note": "",
+      "pinned": false
+    }
+  ]
+}

@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#0e1217" />
+    <meta name="description" content="追踪关注游戏的 Steam 国区价格与历史最低价，每小时更新。" />
+    <title>Steam 价格追踪</title>
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='15' fill='%23171d26'/%3E%3Cpath d='M8 20l4-2 2 1 3-4 3 2 4-5' stroke='%2366c0f4' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E"
+    />
+    <link rel="stylesheet" href="assets/style.css" />
+  </head>
+  <body>
+    <div class="app">
+      <header class="topbar" id="topbar">
+        <div class="brand">
+          <svg viewBox="0 0 32 32" aria-hidden="true">
+            <circle cx="16" cy="16" r="15" fill="none" stroke="currentColor" stroke-opacity="0.35" />
+            <path
+              d="M7.5 20.5l4.2-2.3 2.2 1.2 3.2-4.6 3 2.1 4.6-5.6"
+              fill="none"
+              stroke="#66c0f4"
+              stroke-width="2.2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <circle cx="24.7" cy="11.3" r="1.9" fill="#66c0f4" />
+          </svg>
+          <h1>Steam 价格追踪</h1>
+        </div>
+        <div class="topbar-actions">
+          <button class="icon-btn" id="btn-refresh" title="立即抓取一次价格">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path
+                d="M21 12a9 9 0 1 1-3.2-6.9M21 4v5h-5"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"
+              />
+            </svg>
+            <span class="label">刷新</span>
+          </button>
+          <button class="icon-btn" id="btn-theme" title="切换深浅色">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path
+                d="M21 13.2A9 9 0 1 1 10.8 3a7.2 7.2 0 0 0 10.2 10.2z"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.7"
+              />
+            </svg>
+            <span class="label">主题</span>
+          </button>
+          <button class="icon-btn" id="btn-settings" title="数据源设置">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <circle cx="12" cy="12" r="3.2" fill="none" stroke="currentColor" stroke-width="1.7" />
+              <path
+                d="M12 3.5v2.2M12 18.3v2.2M4.6 12H2.4M21.6 12h-2.2M6.7 6.7l1.6 1.6M15.7 15.7l1.6 1.6M17.3 6.7l-1.6 1.6M8.3 15.7l-1.6 1.6"
+                stroke="currentColor"
+                stroke-width="1.7"
+                stroke-linecap="round"
+              />
+            </svg>
+            <span class="label">设置</span>
+          </button>
+        </div>
+      </header>
+
+      <main>
+        <section class="search-area">
+          <div class="search-box">
+            <svg class="search-icon" viewBox="0 0 24 24" aria-hidden="true">
+              <circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" stroke-width="1.8" />
+              <path d="M15.3 15.3L20 20" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+            </svg>
+            <input
+              id="q"
+              type="search"
+              inputmode="search"
+              autocomplete="off"
+              autocorrect="off"
+              spellcheck="false"
+              placeholder="搜索游戏名 / AppID / 商店链接"
+              aria-label="搜索要追踪的游戏"
+            />
+            <button class="search-clear" id="q-clear" aria-label="清空搜索">
+              <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+                <path
+                  d="M6 6l12 12M18 6L6 18"
+                  stroke="currentColor"
+                  stroke-width="1.9"
+                  stroke-linecap="round"
+                />
+              </svg>
+            </button>
+            <ul class="suggest" id="suggest" hidden></ul>
+          </div>
+        </section>
+
+        <div class="banner banner--warn" id="banner-stale" hidden></div>
+        <div class="banner banner--info" id="banner-readonly" hidden>
+          当前是只读模式：没有配置 GitHub Token，不能增删游戏。
+          <button type="button" data-open-settings>去配置</button>
+        </div>
+
+        <section class="summary" id="summary" aria-label="概览">
+          <div class="stat"><div class="num" id="stat-total">0</div><div class="k">关注中</div></div>
+          <div class="stat"><div class="num" id="stat-sale">0</div><div class="k">正在打折</div></div>
+          <div class="stat"><div class="num is-gold" id="stat-low">0</div><div class="k">处于史低</div></div>
+          <div class="stat"><div class="num is-hot" id="stat-newlow">0</div><div class="k">新史低</div></div>
+        </section>
+
+        <section class="toolbar">
+          <div class="chips" id="filters" role="tablist" aria-label="筛选">
+            <button class="chip is-on" data-filter="all" role="tab">全部</button>
+            <button class="chip" data-filter="sale" role="tab">在促</button>
+            <button class="chip" data-filter="low" role="tab">史低 / 新史低</button>
+            <button class="chip" data-filter="pinned" role="tab">置顶</button>
+          </div>
+          <select class="sort-select" id="sort" aria-label="排序">
+            <option value="lowfirst">新史低优先</option>
+            <option value="cut">折扣力度</option>
+            <option value="price">当前价格</option>
+            <option value="gap">离史低最近</option>
+            <option value="name">名称</option>
+            <option value="updated">最近变动</option>
+          </select>
+        </section>
+
+        <section class="grid" id="grid" aria-live="polite"></section>
+
+        <section class="empty" id="empty" hidden>
+          <strong id="empty-title">还没有数据</strong>
+          <span id="empty-text">定时任务会在每小时的第 5 分钟抓取一次价格。</span>
+          <br />
+          <button type="button" id="empty-action">立即抓取一次</button>
+        </section>
+      </main>
+
+      <footer class="footer">
+        <span id="updated-at">尚未抓取</span>
+        <span id="source-note"></span>
+        <a href="https://store.steampowered.com/" target="_blank" rel="noopener">Steam 商店</a>
+        <span>数据来源：Steam 商店接口 / IsThereAnyDeal</span>
+      </footer>
+    </div>
+
+    <dialog id="settings">
+      <form method="dialog" class="dialog-form">
+        <div class="dialog-head">
+          <h3>数据源设置</h3>
+          <button class="close" value="cancel" aria-label="关闭">×</button>
+        </div>
+        <div class="dialog-body">
+          <div class="field-row">
+            <div class="field">
+              <label for="cfg-owner">GitHub 用户名</label>
+              <input id="cfg-owner" placeholder="your-name" autocomplete="off" />
+            </div>
+            <div class="field">
+              <label for="cfg-repo">仓库名</label>
+              <input id="cfg-repo" placeholder="steam-price-tracker" autocomplete="off" />
+            </div>
+          </div>
+          <div class="field">
+            <label for="cfg-branch">分支</label>
+            <input id="cfg-branch" placeholder="main" autocomplete="off" />
+          </div>
+          <div class="field">
+            <label for="cfg-token">细粒度 PAT</label>
+            <input id="cfg-token" type="password" placeholder="github_pat_..." autocomplete="off" />
+            <div class="help">
+              GitHub → Settings → Developer settings → Fine-grained tokens，只勾选该仓库的
+              <b>Contents: Read and Write</b>。Token 只存在此浏览器的 localStorage，不会写进仓库。
+            </div>
+          </div>
+          <div class="status-line" id="cfg-status"></div>
+          <div class="risk-note">
+            仅本人自用场景建议保存 Token；公用电脑请勿配置，用完可在 GitHub 随时撤销。
+            未配置时页面仍可查看价格，但无法添加或删除游戏。
+          </div>
+        </div>
+        <div class="dialog-foot">
+          <button class="btn btn--ghost" type="button" id="cfg-test">测试连接</button>
+          <button class="btn btn--ghost" type="button" id="cfg-clear">清除</button>
+          <button class="btn btn--primary" type="submit" id="cfg-save">保存</button>
+        </div>
+      </form>
+    </dialog>
+
+    <div class="toast" id="toast" role="status"></div>
+    <noscript>本页面需要启用 JavaScript 才能显示价格数据。</noscript>
+    <script src="assets/app.js" defer></script>
+  </body>
+</html>

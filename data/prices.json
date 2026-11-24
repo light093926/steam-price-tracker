@@ -1,0 +1,148 @@
+{
+  "generated": "2026-11-24T06:20:52.880Z",
+  "currency": "CNY",
+  "itad": false,
+  "items": [
+    {
+      "appid": 1245620,
+      "name": "艾尔登法环",
+      "name_en": null,
+      "header": "https://cdn.akamai.steamstatic.com/steam/apps/1245620/header.jpg",
+      "store_url": "https://store.steampowered.com/app/1245620/",
+      "free": false,
+      "unavailable": false,
+      "now": 29800,
+      "initial": 29800,
+      "cut": 0,
+      "currency": "CNY",
+      "steam_low": null,
+      "global_low": null,
+      "low_source": null,
+      "flag": "no_data",
+      "diff_pct": null,
+      "stale": false,
+      "note": "",
+      "pinned": false,
+      "series": [
+        {
+          "t": "2026-11-24T06:20:52.880Z",
+          "p": 29800
+        }
+      ]
+    },
+    {
+      "appid": 2358720,
+      "name": "黑神话：悟空",
+      "name_en": null,
+      "header": "https://cdn.akamai.steamstatic.com/steam/apps/2358720/header.jpg",
+      "store_url": "https://store.steampowered.com/app/2358720/",
+      "free": false,
+      "unavailable": false,
+      "now": 26800,
+      "initial": 26800,
+      "cut": 0,
+      "currency": "CNY",
+      "steam_low": null,
+      "global_low": null,
+      "low_source": null,
+      "flag": "no_data",
+      "diff_pct": null,
+      "stale": false,
+      "note": "",
+      "pinned": false,
+      "series": [
+        {
+          "t": "2026-11-24T06:20:52.880Z",
+          "p": 26800
+        }
+      ]
+    },
+    {
+      "appid": 1091500,
+      "name": "赛博朋克 2077",
+      "name_en": null,
+      "header": "https://cdn.akamai.steamstatic.com/steam/apps/1091500/header.jpg",
+      "store_url": "https://store.steampowered.com/app/1091500/",
+      "free": false,
+      "unavailable": false,
+      "now": 29800,
+      "initial": 29800,
+      "cut": 0,
+      "currency": "CNY",
+      "steam_low": null,
+      "global_low": null,
+      "low_source": null,
+      "flag": "no_data",
+      "diff_pct": null,
+      "stale": false,
+      "note": "",
+      "pinned": false,
+      "series": [
+        {
+          "t": "2026-11-24T06:20:52.880Z",
+          "p": 29800
+        }
+      ]
+    },
+    {
+      "appid": 1426210,
+      "name": "双人成行",
+      "name_en": null,
+      "header": "https://cdn.akamai.steamstatic.com/steam/apps/1426210/header.jpg",
+      "store_url": "https://store.steampowered.com/app/1426210/",
+      "free": false,
+      "unavailable": false,
+      "now": 3960,
+      "initial": 19800,
+      "cut": 80,
+      "currency": "CNY",
+      "steam_low": null,
+      "global_low": null,
+      "low_source": null,
+      "flag": "no_data",
+      "diff_pct": null,
+      "stale": false,
+      "note": "",
+      "pinned": false,
+      "series": [
+        {
+          "t": "2026-11-24T06:20:52.880Z",
+          "p": 3960
+        }
+      ]
+    },
+    {
+      "appid": 413150,
+      "name": "星露谷物语",
+      "name_en": null,
+      "header": "https://cdn.akamai.steamstatic.com/steam/apps/413150/header.jpg",
+      "store_url": "https://store.steampowered.com/app/413150/",
+      "free": false,
+      "unavailable": false,
+      "now": 4800,
+      "initial": 4800,
+      "cut": 0,
+      "currency": "CNY",
+      "steam_low": null,
+      "global_low": null,
+      "low_source": null,
+      "flag": "no_data",
+      "diff_pct": null,
+      "stale": false,
+      "note": "",
+      "pinned": false,
+      "series": [
+        {
+          "t": "2026-11-24T06:20:52.880Z",
+          "p": 4800
+        }
+      ]
+    }
+  ],
+  "stats": {
+    "total": 5,
+    "on_sale": 1,
+    "at_low": 0,
+    "new_low": 0
+  }
+}
