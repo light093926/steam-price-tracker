@@ -1,5 +1,5 @@
 {
-  "generated": "2026-11-24T07:33:03.824Z",
+  "generated": "2026-11-24T07:44:24.165Z",
   "currency": "CNY",
   "itad": true,
   "items": [
@@ -63,7 +63,7 @@
       "diff_pct": 43,
       "stale": false,
       "note": "",
-      "pinned": true,
+      "pinned": false,
       "series": [
         {
           "t": "2026-11-24T06:20:52.880Z",
@@ -165,7 +165,7 @@
       "diff_pct": 11,
       "stale": false,
       "note": "",
-      "pinned": true,
+      "pinned": false,
       "series": [
         {
           "t": "2026-11-24T07:14:14.896Z",
