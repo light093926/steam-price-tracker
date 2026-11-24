@@ -1,5 +1,5 @@
 {
-  "generated": "2026-11-24T07:12:48.459Z",
+  "generated": "2026-11-24T07:14:14.896Z",
   "currency": "CNY",
   "itad": true,
   "items": [
@@ -138,10 +138,44 @@
           "p": 4800
         }
       ]
+    },
+    {
+      "appid": 4225980,
+      "name": "空之轨迹 the 2nd",
+      "name_en": "Trails in the Sky 2nd Chapter",
+      "header": "https://cdn.akamai.steamstatic.com/steam/apps/4225980/header.jpg",
+      "store_url": "https://store.steampowered.com/app/4225980/",
+      "free": false,
+      "unavailable": false,
+      "now": 29800,
+      "initial": 29800,
+      "cut": 0,
+      "currency": "CNY",
+      "steam_low": {
+        "price": 26820,
+        "at": "2026-09-17"
+      },
+      "global_low": {
+        "price": 26820,
+        "at": "2026-09-17",
+        "shop": "Steam"
+      },
+      "low_source": "steam",
+      "flag": "none",
+      "diff_pct": 11,
+      "stale": false,
+      "note": "",
+      "pinned": false,
+      "series": [
+        {
+          "t": "2026-11-24T07:14:14.896Z",
+          "p": 29800
+        }
+      ]
     }
   ],
   "stats": {
-    "total": 4,
+    "total": 5,
     "on_sale": 0,
     "at_low": 0,
     "new_low": 0

@@ -66,5 +66,22 @@
       "shop": "Epic Game Store"
     },
     "checked": "2026-11-24T07:00:15.136Z"
+  },
+  "4225980": {
+    "uuid": "019b2fe2-69f1-730b-a95c-e44fc51e8729",
+    "title": "Trails in the Sky 2nd Chapter",
+    "shopId": 61,
+    "steamLowFlat": 26820,
+    "steamLow": {
+      "price": 26820,
+      "at": "2026-09-17"
+    },
+    "lowChecked": true,
+    "globalLow": {
+      "price": 26820,
+      "at": "2026-09-17",
+      "shop": "Steam"
+    },
+    "checked": "2026-11-24T07:14:14.895Z"
   }
 }
