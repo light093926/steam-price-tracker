@@ -335,9 +335,26 @@
           ? '正在史低价'
           : `低于史低 ${Math.abs(item.diff_pct)}%`
       : '';
-    const bar = Number.isFinite(item.now) && item.now > 0
-      ? Math.min(100, Math.round((steam.price / item.now) * 100))
+
+    // 刻度轴：左端史低、右端原价，指针是现价
+    const top = Number.isFinite(item.initial) && item.initial > steam.price
+      ? item.initial
+      : Math.max(Number.isFinite(item.now) ? item.now : steam.price, steam.price);
+    const range = top - steam.price;
+    const pos = range > 0 && Number.isFinite(item.now)
+      ? Math.min(100, Math.max(0, ((item.now - steam.price) / range) * 100))
       : 0;
+    const scale = `
+      <div class="price-scale" aria-hidden="true">
+        <div class="price-scale-track">
+          <span class="price-scale-fill" style="width:${pos.toFixed(1)}%"></span>
+          <span class="price-scale-marker" style="left:${pos.toFixed(1)}%"></span>
+        </div>
+        <div class="price-scale-ends">
+          <span>史低 ${yen(steam.price)}</span>
+          <span>${Number.isFinite(item.initial) && item.initial > steam.price ? `原价 ${yen(item.initial)}` : ''}</span>
+        </div>
+      </div>`;
 
     const globalNote =
       global && global.price < steam.price
@@ -351,7 +368,7 @@
         <span class="low-date">${fmtDate(steam.at) || '—'}</span>
         <span class="gap">${gapText}</span>
       </div>
-      <div class="low-bar"><i style="width:${bar}%"></i></div>
+      ${scale}
       ${globalNote}`;
   }
 
