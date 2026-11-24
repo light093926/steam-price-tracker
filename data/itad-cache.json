@@ -1,21 +1,4 @@
 {
-  "1245620": {
-    "uuid": "018d937f-590c-728b-ac35-38bcff85f086",
-    "title": "Elden Ring",
-    "shopId": 61,
-    "steamLowFlat": 17880,
-    "steamLow": {
-      "price": 17880,
-      "at": "2025-06-26"
-    },
-    "lowChecked": true,
-    "globalLow": {
-      "price": 17880,
-      "at": "2023-12-21",
-      "shop": "Steam"
-    },
-    "checked": "2026-11-24T07:00:15.135Z"
-  },
   "1903340": {
     "uuid": "018ffe0d-15a7-7247-bb3c-4e5e1980561f",
     "title": "Clair Obscur: Expedition 33",

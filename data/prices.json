@@ -1,42 +1,8 @@
 {
-  "generated": "2026-11-24T07:46:30.393Z",
+  "generated": "2026-11-24T07:47:18.073Z",
   "currency": "CNY",
   "itad": true,
   "items": [
-    {
-      "appid": 1245620,
-      "name": "艾尔登法环",
-      "name_en": "Elden Ring",
-      "header": "https://cdn.akamai.steamstatic.com/steam/apps/1245620/header.jpg",
-      "store_url": "https://store.steampowered.com/app/1245620/",
-      "free": false,
-      "unavailable": false,
-      "now": 29800,
-      "initial": 29800,
-      "cut": 0,
-      "currency": "CNY",
-      "steam_low": {
-        "price": 17880,
-        "at": "2025-06-26"
-      },
-      "global_low": {
-        "price": 17880,
-        "at": "2023-12-21",
-        "shop": "Steam"
-      },
-      "low_source": "steam",
-      "flag": "none",
-      "diff_pct": 67,
-      "stale": false,
-      "note": "",
-      "pinned": false,
-      "series": [
-        {
-          "t": "2026-11-24T06:20:52.880Z",
-          "p": 29800
-        }
-      ]
-    },
     {
       "appid": 2358720,
       "name": "黑神话：悟空",
@@ -141,7 +107,7 @@
     }
   ],
   "stats": {
-    "total": 4,
+    "total": 3,
     "on_sale": 0,
     "at_low": 0,
     "new_low": 0
