@@ -1,5 +1,5 @@
 {
-  "generated": "2026-11-24T14:24:54.717Z",
+  "generated": "2026-11-24T18:45:21.367Z",
   "currency": "CNY",
   "itad": true,
   "items": [
@@ -205,9 +205,9 @@
       "store_url": "https://store.steampowered.com/app/1638220/",
       "free": false,
       "unavailable": false,
-      "now": 1560,
+      "now": 3900,
       "initial": 3900,
-      "cut": 60,
+      "cut": 0,
       "currency": "CNY",
       "steam_low": {
         "price": 1560,
@@ -219,8 +219,8 @@
         "shop": "Steam"
       },
       "low_source": "steam",
-      "flag": "equal_low",
-      "diff_pct": 0,
+      "flag": "none",
+      "diff_pct": 150,
       "stale": false,
       "note": "",
       "pinned": false,
@@ -284,6 +284,10 @@
         {
           "t": "2026-11-10T19:17:15+01:00",
           "p": 1560
+        },
+        {
+          "t": "2026-11-24T18:45:21.367Z",
+          "p": 3900
         }
       ]
     },
@@ -426,8 +430,8 @@
   ],
   "stats": {
     "total": 6,
-    "on_sale": 2,
-    "at_low": 3,
+    "on_sale": 1,
+    "at_low": 2,
     "new_low": 0
   }
 }
