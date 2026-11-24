@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-24T07:47:01.396Z",
+  "updated": "2026-11-24T07:56:07.646Z",
   "items": [
     {
       "appid": 2358720,
@@ -22,6 +22,14 @@
       "name": "光与影：33号远征队",
       "header": "https://cdn.akamai.steamstatic.com/steam/apps/1903340/header.jpg",
       "added": "2026-11-24T07:46:16.040Z",
+      "note": "",
+      "pinned": false
+    },
+    {
+      "appid": 1638220,
+      "name": "轩辕剑叁外传 天之痕",
+      "header": "https://cdn.akamai.steamstatic.com/steam/apps/1638220/header.jpg",
+      "added": "2026-11-24T07:56:07.646Z",
       "note": "",
       "pinned": false
     }
