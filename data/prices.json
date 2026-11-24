@@ -1,5 +1,5 @@
 {
-  "generated": "2026-11-24T07:01:14.274Z",
+  "generated": "2026-11-24T07:07:03.971Z",
   "currency": "CNY",
   "itad": true,
   "items": [
@@ -106,40 +106,6 @@
       ]
     },
     {
-      "appid": 1426210,
-      "name": "双人成行",
-      "name_en": "It Takes Two",
-      "header": "https://cdn.akamai.steamstatic.com/steam/apps/1426210/header.jpg",
-      "store_url": "https://store.steampowered.com/app/1426210/",
-      "free": false,
-      "unavailable": false,
-      "now": 3960,
-      "initial": 19800,
-      "cut": 80,
-      "currency": "CNY",
-      "steam_low": {
-        "price": 3960,
-        "at": "2026-11-19"
-      },
-      "global_low": {
-        "price": 3960,
-        "at": "2024-12-11",
-        "shop": "Steam"
-      },
-      "low_source": "steam",
-      "flag": "equal_low",
-      "diff_pct": 0,
-      "stale": false,
-      "note": "",
-      "pinned": false,
-      "series": [
-        {
-          "t": "2026-11-24T06:20:52.880Z",
-          "p": 3960
-        }
-      ]
-    },
-    {
       "appid": 413150,
       "name": "星露谷物语",
       "name_en": "Stardew Valley",
@@ -175,9 +141,9 @@
     }
   ],
   "stats": {
-    "total": 5,
-    "on_sale": 1,
-    "at_low": 1,
+    "total": 4,
+    "on_sale": 0,
+    "at_low": 0,
     "new_low": 0
   }
 }

@@ -50,23 +50,6 @@
     },
     "checked": "2026-11-24T07:00:15.135Z"
   },
-  "1426210": {
-    "uuid": "018d937f-4a27-72c8-9837-8ec5e5e92932",
-    "title": "It Takes Two",
-    "shopId": 61,
-    "steamLowFlat": 3960,
-    "steamLow": {
-      "price": 3960,
-      "at": "2026-11-19"
-    },
-    "lowChecked": true,
-    "globalLow": {
-      "price": 3960,
-      "at": "2024-12-11",
-      "shop": "Steam"
-    },
-    "checked": "2026-11-24T07:00:15.136Z"
-  },
   "2358720": {
     "uuid": "018d937f-7456-7396-b192-9e1866e209bb",
     "title": "Black Myth: Wukong",
