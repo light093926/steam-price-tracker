@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-24T08:02:53.154Z",
+  "updated": "2026-11-24T08:34:57.455Z",
   "items": [
     {
       "appid": 2358720,
@@ -40,6 +40,12 @@
       "added": "2026-11-24T08:02:53.154Z",
       "note": "",
       "pinned": false
+    },
+    {
+      "appid": 4115450,
+      "name": "影之刃零",
+      "header": "https://cdn.akamai.steamstatic.com/steam/apps/4115450/header.jpg",
+      "added": "2026-11-24T08:34:57.455Z"
     }
   ]
 }
