@@ -99,10 +99,13 @@
     const { token } = state.config;
     const res = await fetch(`${GH_API}${path}`, {
       ...options,
+      // GitHub 的 GET 响应带 max-age=60，浏览器缓存会让我们拿着旧 sha 去写 → 409
+      cache: 'no-store',
       headers: {
         accept: 'application/vnd.github+json',
         authorization: `Bearer ${token}`,
         'x-github-api-version': '2022-11-28',
+        'cache-control': 'no-cache',
         ...(options.body ? { 'content-type': 'application/json' } : {}),
       },
     });
@@ -116,36 +119,63 @@
     return res.status === 204 ? null : res.json();
   }
 
+  /** 把 GitHub 的英文报错翻成人话 */
+  function ghErrorText(err) {
+    const m = String(err?.message || err || '');
+    if (/does not match/i.test(m)) return '列表刚被其它操作更新，已重试仍冲突，请再点一次';
+    if (/Not Found/i.test(m)) return '找不到仓库或文件，检查设置里的用户名 / 仓库名 / 分支';
+    if (/Bad credentials|401/i.test(m)) return 'Token 无效或已过期，请在设置里重新填写';
+    if (/not accessible|Resource not accessible/i.test(m)) return 'Token 缺少 Contents 写入权限';
+    if (/rate limit/i.test(m)) return 'GitHub API 触发限流，等一分钟再试';
+    if (/Failed to fetch|NetworkError/i.test(m)) return '网络请求失败，检查网络后重试';
+    return m || '未知错误';
+  }
+
+  // 串行化写操作：连点两次也不会互相抢 sha
+  let writeQueue = Promise.resolve();
+  function serializeWrite(task) {
+    const run = writeQueue.then(task, task);
+    writeQueue = run.catch(() => {});
+    return run;
+  }
+
   const watchlistPath = () =>
     `/repos/${state.config.owner}/${state.config.repo}/contents/data/watchlist.json`;
 
-  /** 读改写 watchlist；409 冲突时重取 sha 再来一次 */
+  /** 读改写 watchlist：串行执行 + 每次重试都绕过缓存重取最新 sha */
   async function mutateWatchlist(mutator, message) {
     if (!hasWriteAccess()) throw new Error('未配置 GitHub Token');
     const branch = state.config.branch || 'main';
-    for (let attempt = 0; attempt < 3; attempt++) {
-      const file = await gh(`${watchlistPath()}?ref=${encodeURIComponent(branch)}`);
-      const list = JSON.parse(b64decode(file.content));
-      list.items = Array.isArray(list.items) ? list.items : [];
-      mutator(list);
-      list.updated = new Date().toISOString();
-      try {
-        await gh(watchlistPath(), {
-          method: 'PUT',
-          body: JSON.stringify({
-            message,
-            content: b64encode(`${JSON.stringify(list, null, 2)}\n`),
-            sha: file.sha,
-            branch,
-          }),
-        });
-        state.watchlist = list;
-        return list;
-      } catch (err) {
-        if (attempt === 2) throw err;
-        await sleep(500);
+    return serializeWrite(async () => {
+      let lastErr;
+      for (let attempt = 0; attempt < 4; attempt++) {
+        if (attempt) await sleep(300 + attempt * 350);
+        // 带随机参数强制绕过 HTTP 缓存，避免拿着旧 sha 反复 409
+        const file = await gh(
+          `${watchlistPath()}?ref=${encodeURIComponent(branch)}&_=${Date.now()}${attempt}`,
+        );
+        const list = JSON.parse(b64decode(file.content));
+        list.items = Array.isArray(list.items) ? list.items : [];
+        mutator(list);
+        list.updated = new Date().toISOString();
+        try {
+          await gh(watchlistPath(), {
+            method: 'PUT',
+            body: JSON.stringify({
+              message,
+              content: b64encode(`${JSON.stringify(list, null, 2)}\n`),
+              sha: file.sha,
+              branch,
+            }),
+          });
+          state.watchlist = list;
+          return list;
+        } catch (err) {
+          lastErr = err;
+        }
       }
-    }
+      throw lastErr;
+    });
   }
 
   async function dispatchRefresh() {
@@ -540,8 +570,45 @@
       pollForUpdate();
     } catch (err) {
       if (err.message === 'DUPLICATE') toast('这款游戏已经在关注列表里了');
-      else toast(`添加失败：${err.message}`, 'err');
+      else toast(`添加失败：${ghErrorText(err)}`, 'err');
     }
+  }
+
+  /** 应用内确认框，替掉原生 confirm 的系统弹窗 */
+  function askConfirm({ title, text, okText = '确定' }) {
+    const dlg = el('confirm-dialog');
+    el('confirm-title').textContent = title;
+    el('confirm-text').textContent = text;
+    dlg.querySelector('.btn--danger').textContent = okText;
+    return new Promise((resolve) => {
+      const onClose = () => {
+        dlg.removeEventListener('close', onClose);
+        resolve(dlg.returnValue === 'ok');
+      };
+      dlg.addEventListener('close', onClose);
+      dlg.returnValue = '';
+      dlg.showModal();
+    });
+  }
+
+  /** 应用内备注输入框，返回值：null=取消，''=清空 */
+  function askNote(current) {
+    const dlg = el('note-dialog');
+    const input = el('note-input');
+    input.value = current || '';
+    return new Promise((resolve) => {
+      const onClose = () => {
+        dlg.removeEventListener('close', onClose);
+        resolve(dlg.returnValue === 'ok' ? input.value : null);
+      };
+      dlg.addEventListener('close', onClose);
+      dlg.returnValue = '';
+      dlg.showModal();
+      requestAnimationFrame(() => {
+        input.focus();
+        input.select();
+      });
+    });
   }
 
   async function handleRemove(appid) {
@@ -549,7 +616,13 @@
       openSettings();
       return;
     }
-    if (!confirm('从关注列表移除这款游戏？')) return;
+    const name = (state.prices?.items ?? []).find((i) => i.appid === appid)?.name || `AppID ${appid}`;
+    const ok = await askConfirm({
+      title: '移除关注',
+      text: `确定把「${name}」移出关注列表？移掉后就不再抓它的价格了。`,
+      okText: '移除',
+    });
+    if (!ok) return;
     try {
       await mutateWatchlist((list) => {
         list.items = list.items.filter((i) => i.appid !== appid);
@@ -558,7 +631,7 @@
       toast('已移除');
       render();
     } catch (err) {
-      toast(`移除失败：${err.message}`, 'err');
+      toast(`移除失败：${ghErrorText(err)}`, 'err');
     }
   }
 
@@ -567,20 +640,26 @@
       openSettings();
       return;
     }
+    const target = (state.prices?.items ?? []).find((i) => i.appid === appid);
+    const next = !target?.pinned;
+    if (target) {
+      target.pinned = next;
+      render();
+    }
     try {
-      let next = false;
       await mutateWatchlist((list) => {
         const item = list.items.find((i) => i.appid === appid);
-        if (item) {
-          item.pinned = !item.pinned;
-          next = item.pinned;
-        }
+        if (!item) throw new Error('NOT_WATCHED');
+        item.pinned = next;
       }, `chore(watchlist): pin ${appid}`);
-      const target = (state.prices?.items ?? []).find((i) => i.appid === appid);
-      if (target) target.pinned = next;
-      render();
+      toast(next ? '已置顶' : '已取消置顶');
     } catch (err) {
-      toast(`操作失败：${err.message}`, 'err');
+      if (target) {
+        target.pinned = !next;
+        render();
+      }
+      const msg = err.message === 'NOT_WATCHED' ? '这款游戏已不在关注列表里' : ghErrorText(err);
+      toast(`操作失败：${msg}`, 'err');
     }
   }
 
@@ -589,19 +668,29 @@
       openSettings();
       return;
     }
-    const current = (state.prices?.items ?? []).find((i) => i.appid === appid)?.note ?? '';
-    const input = prompt('给这款游戏加个备注（留空可清除）', current);
-    if (input === null) return;
+    const target = (state.prices?.items ?? []).find((i) => i.appid === appid);
+    const value = await askNote(target?.note ?? '');
+    if (value === null) return;
+    const note = value.trim().slice(0, 60);
+    const prev = target?.note ?? '';
+    if (target && target.note !== note) {
+      target.note = note;
+      render();
+    }
     try {
       await mutateWatchlist((list) => {
         const item = list.items.find((i) => i.appid === appid);
-        if (item) item.note = input.slice(0, 60);
+        if (!item) throw new Error('NOT_WATCHED');
+        item.note = note;
       }, `chore(watchlist): note ${appid}`);
-      const target = (state.prices?.items ?? []).find((i) => i.appid === appid);
-      if (target) target.note = input.slice(0, 60);
-      render();
+      toast(note ? '备注已保存' : '备注已清除');
     } catch (err) {
-      toast(`保存失败：${err.message}`, 'err');
+      if (target) {
+        target.note = prev;
+        render();
+      }
+      const msg = err.message === 'NOT_WATCHED' ? '这款游戏已不在关注列表里' : ghErrorText(err);
+      toast(`保存失败：${msg}`, 'err');
     }
   }
 

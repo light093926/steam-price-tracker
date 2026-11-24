@@ -39,10 +39,12 @@ jobs:
         run: |
           git config user.name "steam-price-bot"
           git config user.email "steam-price-bot@users.noreply.github.com"
-          git add data
+          # 只提交抓取产物；watchlist.json 归页面写，避免把用户的增删/置顶回滚
+          git add data/prices.json data/history.json data/itad-cache.json
           if git diff --staged --quiet; then
             echo "数据无变化，跳过提交"
           else
             git commit -m "chore(data): prices @ $(date -u +%FT%TZ)"
+            git pull --rebase --no-edit
             git push
           fi

@@ -149,16 +149,19 @@ button {
   background: var(--card);
   color: var(--text);
   font-size: 13px;
-  transition: background 0.15s ease, border-color 0.15s ease, transform 0.1s ease;
+  transition: background-color 0.18s ease, border-color 0.18s ease, color 0.18s ease,
+    transform 0.12s ease, box-shadow 0.18s ease;
 }
 
 .icon-btn:hover {
   background: var(--card-hover);
   border-color: var(--accent);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.14);
 }
 
 .icon-btn:active {
-  transform: scale(0.97);
+  transform: translateY(1px) scale(0.965);
+  box-shadow: none;
 }
 
 .icon-btn svg {
@@ -270,6 +273,7 @@ button {
   padding: 8px;
   border-radius: 9px;
   cursor: pointer;
+  transition: background-color 0.15s ease;
 }
 
 .suggest li:hover,
@@ -378,6 +382,7 @@ button {
   border: 1px solid var(--line-soft);
   border-radius: 12px;
   min-width: 0;
+  transition: background-color 0.25s ease, border-color 0.25s ease;
 }
 
 .stat .num {
@@ -436,7 +441,17 @@ button {
   color: var(--muted);
   font-size: 13px;
   white-space: nowrap;
-  transition: all 0.15s ease;
+  transition: background-color 0.18s ease, border-color 0.18s ease, color 0.18s ease,
+    transform 0.12s ease;
+}
+
+.chip:hover {
+  border-color: color-mix(in srgb, var(--accent) 55%, var(--line));
+  color: var(--accent);
+}
+
+.chip:active {
+  transform: scale(0.96);
 }
 
 .chip.is-on {
@@ -477,7 +492,16 @@ button {
   border: 1px solid var(--line-soft);
   border-radius: var(--radius);
   overflow: hidden;
-  transition: border-color 0.18s ease, transform 0.18s ease, box-shadow 0.18s ease;
+  transition: border-color 0.18s ease, transform 0.18s ease, box-shadow 0.18s ease,
+    background-color 0.25s ease;
+  animation: cardIn 0.26s cubic-bezier(0.22, 0.85, 0.35, 1);
+}
+
+@keyframes cardIn {
+  from {
+    opacity: 0;
+    transform: translateY(7px);
+  }
 }
 
 .card:hover {
@@ -720,18 +744,26 @@ button {
   background: transparent;
   color: var(--muted);
   font-size: 12.5px;
-  transition: all 0.15s ease;
+  transition: background-color 0.18s ease, border-color 0.18s ease, color 0.18s ease,
+    transform 0.12s ease;
 }
 
 .card-actions a:hover,
 .card-actions button:hover {
   border-color: var(--accent);
   color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 10%, transparent);
+}
+
+.card-actions a:active,
+.card-actions button:active {
+  transform: scale(0.955);
 }
 
 .card-actions .danger:hover {
   border-color: var(--red);
   color: var(--red);
+  background: color-mix(in srgb, var(--red) 12%, transparent);
 }
 
 .card-actions .is-on {
@@ -826,6 +858,24 @@ dialog {
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.45);
 }
 
+dialog[open] {
+  animation: dialogIn 0.22s cubic-bezier(0.2, 0.8, 0.3, 1);
+}
+
+@keyframes dialogIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.98);
+  }
+}
+
+.dialog-text {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--text);
+}
+
 dialog::backdrop {
   background: rgba(5, 9, 14, 0.62);
   backdrop-filter: blur(2px);
@@ -854,6 +904,16 @@ dialog::backdrop {
   color: var(--muted);
   font-size: 20px;
   line-height: 1;
+  transition: background-color 0.18s ease, color 0.18s ease, transform 0.12s ease;
+}
+
+.dialog-head .close:hover {
+  background: var(--card-hover);
+  color: var(--text);
+}
+
+.dialog-head .close:active {
+  transform: scale(0.94);
 }
 
 .dialog-body {
@@ -910,6 +970,12 @@ dialog::backdrop {
   display: flex;
   gap: 10px;
   padding: 0 18px 18px;
+  border-top: 1px solid var(--line-soft);
+  padding-top: 14px;
+}
+
+.dialog-foot .btn {
+  flex: 1;
 }
 
 .btn {
@@ -920,6 +986,17 @@ dialog::backdrop {
   background: var(--card);
   color: var(--text);
   font-size: 14px;
+  transition: background-color 0.18s ease, border-color 0.18s ease, color 0.18s ease,
+    transform 0.12s ease, box-shadow 0.18s ease;
+}
+
+.btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.btn:active {
+  transform: scale(0.97);
 }
 
 .btn--primary {
@@ -928,6 +1005,26 @@ dialog::backdrop {
   background: var(--accent);
   color: #04121b;
   font-weight: 650;
+  box-shadow: 0 4px 14px rgba(102, 192, 244, 0.28);
+}
+
+.btn--primary:hover {
+  background: color-mix(in srgb, var(--accent) 88%, #ffffff);
+  color: #04121b;
+  box-shadow: 0 6px 18px rgba(102, 192, 244, 0.36);
+}
+
+.btn--danger {
+  border-color: rgba(226, 80, 74, 0.55);
+  background: rgba(226, 80, 74, 0.12);
+  color: var(--red);
+  font-weight: 600;
+}
+
+.btn--danger:hover {
+  border-color: var(--red);
+  background: rgba(226, 80, 74, 0.2);
+  color: var(--red);
 }
 
 .btn--ghost {
@@ -963,29 +1060,32 @@ dialog::backdrop {
   position: fixed;
   left: 50%;
   bottom: calc(24px + var(--safe-bottom));
-  transform: translate(-50%, 20px);
+  transform: translate(-50%, 16px) scale(0.98);
   z-index: 60;
   max-width: min(88vw, 420px);
   padding: 10px 16px;
-  border-radius: 10px;
-  background: rgba(20, 26, 34, 0.96);
-  border: 1px solid var(--line);
-  color: var(--text);
+  border-radius: 11px;
+  /* 固定深色底 + 固定浅色字，避免浅色主题下深字叠深底看不见 */
+  background: rgba(15, 20, 27, 0.96);
+  border: 1px solid rgba(150, 170, 195, 0.32);
+  color: #eef3f9;
   font-size: 13px;
-  box-shadow: var(--shadow);
+  line-height: 1.45;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.2s ease, transform 0.2s ease;
+  transition: opacity 0.22s ease, transform 0.22s cubic-bezier(0.2, 0.8, 0.3, 1);
 }
 
 .toast.is-on {
   opacity: 1;
-  transform: translate(-50%, 0);
+  transform: translate(-50%, 0) scale(1);
 }
 
 .toast.is-err {
-  border-color: rgba(226, 80, 74, 0.6);
-  color: #ffb4b0;
+  background: rgba(58, 20, 20, 0.96);
+  border-color: rgba(226, 80, 74, 0.65);
+  color: #ffd2ce;
 }
 
 /* ---------------------------------------------------------------- 移动端 */
