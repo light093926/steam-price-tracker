@@ -45,6 +45,8 @@ jobs:
             echo "数据无变化，跳过提交"
           else
             git commit -m "chore(data): prices @ $(date -u +%FT%TZ)"
-            git pull --rebase --no-edit
+            # 远端可能被上一次运行或页面写入推进；冲突时以本次新抓的数据为准
+            git fetch origin main
+            git rebase -X theirs origin/main
             git push
           fi
