@@ -1,5 +1,5 @@
 {
-  "generated": "2026-11-24T07:45:38.586Z",
+  "generated": "2026-11-24T07:46:30.393Z",
   "currency": "CNY",
   "itad": true,
   "items": [
@@ -72,40 +72,6 @@
       ]
     },
     {
-      "appid": 1091500,
-      "name": "赛博朋克 2077",
-      "name_en": "Cyberpunk 2077",
-      "header": "https://cdn.akamai.steamstatic.com/steam/apps/1091500/header.jpg",
-      "store_url": "https://store.steampowered.com/app/1091500/",
-      "free": false,
-      "unavailable": false,
-      "now": 29800,
-      "initial": 29800,
-      "cut": 0,
-      "currency": "CNY",
-      "steam_low": {
-        "price": 8940,
-        "at": "2026-10-13"
-      },
-      "global_low": {
-        "price": 8900,
-        "at": "2026-06-17",
-        "shop": "GOG"
-      },
-      "low_source": "steam",
-      "flag": "none",
-      "diff_pct": 233,
-      "stale": false,
-      "note": "",
-      "pinned": false,
-      "series": [
-        {
-          "t": "2026-11-24T06:20:52.880Z",
-          "p": 29800
-        }
-      ]
-    },
-    {
       "appid": 4225980,
       "name": "空之轨迹 the 2nd",
       "name_en": "Trails in the Sky 2nd Chapter",
@@ -136,6 +102,40 @@
         {
           "t": "2026-11-24T07:14:14.896Z",
           "p": 29800
+        }
+      ]
+    },
+    {
+      "appid": 1903340,
+      "name": "光与影：33号远征队",
+      "name_en": "Clair Obscur: Expedition 33",
+      "header": "https://cdn.akamai.steamstatic.com/steam/apps/1903340/header.jpg",
+      "store_url": "https://store.steampowered.com/app/1903340/",
+      "free": false,
+      "unavailable": false,
+      "now": 21800,
+      "initial": 21800,
+      "cut": 0,
+      "currency": "CNY",
+      "steam_low": {
+        "price": 17440,
+        "at": "2026-10-29"
+      },
+      "global_low": {
+        "price": 15522,
+        "at": "2026-03-12",
+        "shop": "2game"
+      },
+      "low_source": "steam",
+      "flag": "none",
+      "diff_pct": 25,
+      "stale": false,
+      "note": "",
+      "pinned": false,
+      "series": [
+        {
+          "t": "2026-11-24T07:46:30.393Z",
+          "p": 21800
         }
       ]
     }

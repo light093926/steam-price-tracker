@@ -1,21 +1,4 @@
 {
-  "1091500": {
-    "uuid": "018d937f-2997-7131-b8b9-7c8af4825fa8",
-    "title": "Cyberpunk 2077",
-    "shopId": 61,
-    "steamLowFlat": 8940,
-    "steamLow": {
-      "price": 8940,
-      "at": "2026-10-13"
-    },
-    "lowChecked": true,
-    "globalLow": {
-      "price": 8900,
-      "at": "2026-06-17",
-      "shop": "GOG"
-    },
-    "checked": "2026-11-24T07:00:15.136Z"
-  },
   "1245620": {
     "uuid": "018d937f-590c-728b-ac35-38bcff85f086",
     "title": "Elden Ring",
@@ -32,6 +15,23 @@
       "shop": "Steam"
     },
     "checked": "2026-11-24T07:00:15.135Z"
+  },
+  "1903340": {
+    "uuid": "018ffe0d-15a7-7247-bb3c-4e5e1980561f",
+    "title": "Clair Obscur: Expedition 33",
+    "shopId": 61,
+    "steamLowFlat": 17440,
+    "steamLow": {
+      "price": 17440,
+      "at": "2026-10-29"
+    },
+    "lowChecked": true,
+    "globalLow": {
+      "price": 15522,
+      "at": "2026-03-12",
+      "shop": "2game"
+    },
+    "checked": "2026-11-24T07:46:30.393Z"
   },
   "2358720": {
     "uuid": "018d937f-7456-7396-b192-9e1866e209bb",
