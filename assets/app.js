@@ -382,6 +382,7 @@
     const note = item.note ? `<div class="card-note" title="${esc(item.note)}">${esc(item.note)}</div>` : '';
     return `<article class="card${isNew ? ' is-newlow' : ''}" data-appid="${item.appid}">
       <div class="card-media">
+        <div class="media-fallback" aria-hidden="true"><span>${esc(item.name)}</span></div>
         <img src="${esc(item.header)}" alt="" loading="lazy" decoding="async" onerror="this.remove()" />
         <div class="badges">${flagBadges(item)}</div>
       </div>

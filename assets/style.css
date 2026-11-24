@@ -526,6 +526,24 @@ button {
   height: 100%;
   object-fit: cover;
   display: block;
+  position: relative;
+  z-index: 1;
+}
+
+/* 封面图缺失时（部分新作 CDN 没有 header.jpg）垫一层游戏名，避免整块空黑 */
+.media-fallback {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 18px;
+  text-align: center;
+  font-size: 15px;
+  font-weight: 650;
+  letter-spacing: 0.02em;
+  color: rgba(228, 238, 250, 0.66);
 }
 
 .card-media::after {
