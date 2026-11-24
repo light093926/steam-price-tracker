@@ -89,18 +89,24 @@ button {
 
 /* ---------------------------------------------------------------- 顶栏 */
 
+/* 顶栏铺满整屏、内容列对齐正文：吸顶时不与两侧留白分割，避免看着像被截断 */
 .topbar {
   position: sticky;
   top: 0;
   z-index: 20;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 14px 0 12px;
   background: color-mix(in srgb, var(--bg) 82%, transparent);
   backdrop-filter: blur(14px);
   border-bottom: 1px solid transparent;
   transition: border-color 0.2s ease;
+}
+
+.topbar-inner {
+  width: min(1200px, 100%);
+  margin: 0 auto;
+  padding: 14px 16px 12px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
 .topbar.is-stuck {
@@ -600,9 +606,10 @@ button {
 }
 
 .badge--muted {
-  background: rgba(140, 152, 168, 0.28);
-  color: var(--text);
-  border: 1px solid rgba(160, 172, 190, 0.35);
+  /* 徽标叠在封面图上，固定用深色底 + 浅色字，浅色主题下才不会糊成一片 */
+  background: rgba(14, 20, 28, 0.72);
+  color: #eaf0f8;
+  border: 1px solid rgba(255, 255, 255, 0.18);
 }
 
 @keyframes breathe {
@@ -843,22 +850,6 @@ button {
   border-color: var(--red);
   color: var(--red);
   background: color-mix(in srgb, var(--red) 12%, transparent);
-}
-
-.card-actions .is-on {
-  color: var(--gold);
-  border-color: rgba(232, 193, 92, 0.5);
-}
-
-.card-note {
-  font-size: 12px;
-  color: var(--muted);
-  background: var(--line-soft);
-  border-radius: 7px;
-  padding: 5px 8px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 
 /* ---------------------------------------------------------------- 空态 / 骨架 */
@@ -1177,9 +1168,8 @@ dialog::backdrop {
     padding: 0 12px calc(22px + var(--safe-bottom));
   }
 
-  /* 顶栏贴到屏幕两边：否则吸顶时左右各露 12px 缝，下面内容会从缝里透出来 */
-  .topbar {
-    margin: 0 -12px;
+  /* 顶栏现在是独立的整屏条，只需要跟着移动端收窄内边距 */
+  .topbar-inner {
     padding: 14px 12px 12px;
   }
 

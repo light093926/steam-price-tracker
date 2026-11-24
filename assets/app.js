@@ -240,15 +240,10 @@
         header: w.header || headerOf(w.appid),
         pending: true,
         flag: 'pending',
-        pinned: w.pinned === true,
-        note: w.note ?? '',
         cut: 0,
       }));
     }
-    return priced.map((p) => {
-      const w = (state.watchlist?.items ?? []).find((i) => i.appid === p.appid);
-      return { ...p, pinned: p.pinned ?? w?.pinned ?? false, note: p.note ?? w?.note ?? '' };
-    });
+    return priced;
   }
 
   const headerOf = (appid) => `https://cdn.akamai.steamstatic.com/steam/apps/${appid}/header.jpg`;
@@ -259,8 +254,6 @@
         return items.filter((i) => i.cut > 0 && !i.free);
       case 'low':
         return items.filter((i) => i.flag === 'new_low' || i.flag === 'equal_low');
-      case 'pinned':
-        return items.filter((i) => i.pinned);
       default:
         return items;
     }
@@ -283,7 +276,7 @@
       },
     }[state.sort];
 
-    return [...items].sort((a, b) => Number(b.pinned) - Number(a.pinned) || cmp(a, b));
+    return [...items].sort(cmp);
   }
 
   function flagBadges(item) {
@@ -372,58 +365,56 @@
       ${globalNote}`;
   }
 
+  /**
+   * 价格走势：价格只在调价那一刻跳变，所以画阶梯——水平段表示该价维持期，竖线表示调价。
+   * 连成斜线会让人误以为价格在平滑变动。
+   */
   function sparkline(item) {
-    const raw = (item.series ?? []).filter((p) => Number.isFinite(p.p));
-    if (raw.length < 2) {
-      // 只有 1 个点或还没记录时给虚线占位，让用户知道曲线在积累而不是坏了
-      return `<div class="series series--empty"><span>${raw.length ? '价格曲线积累中' : '刚开始记录价格'}</span></div>`;
-    }
-    // 按月取低点：原始调价记录里一次打折就是一根锯齿，压缩到月低点后走势才看得懂
-    const curMonth = new Date().toISOString().slice(0, 7);
-    const byMonth = new Map();
-    for (const p of raw) {
-      const d = Date.parse(p.t ?? '');
-      const key = Number.isFinite(d) ? new Date(d).toISOString().slice(0, 7) : '';
-      if (!Number.isFinite(d)) continue;
-      if (key === curMonth) {
-        byMonth.set(key, Number.isFinite(item.now) ? item.now : p.p);
-        continue;
-      }
-      const cur = byMonth.get(key);
-      if (cur === undefined || p.p < cur) byMonth.set(key, p.p);
-    }
-    const pts = [...byMonth.entries()]
-      .sort(([a], [b]) => a.localeCompare(b))
-      .slice(-12)
-      .map(([t, p]) => ({ t: `${t}-01`, p }));
+    const raw = (item.series ?? [])
+      .filter((p) => Number.isFinite(p.p) && Number.isFinite(Date.parse(p.t ?? '')))
+      .map((p) => ({ t: Date.parse(p.t), p: p.p }))
+      .sort((a, b) => a.t - b.t);
 
-    if (pts.length < 2) {
-      return `<div class="series series--empty"><span>只剩一个月的记录，等下个月就能画走势</span></div>`;
+    // 末尾补当前价，让最右端始终等于卡片上显示的现价
+    if (Number.isFinite(item.now) && raw.at(-1)?.p !== item.now) {
+      raw.push({ t: Date.now(), p: item.now });
     }
-    const values = pts.map((p) => p.p);
+
+    if (raw.length < 2) {
+      const hint = raw.length ? '只有一次调价记录，等下次调价就能画走势' : '刚开始记录价格';
+      return `<div class="series series--empty"><span>${hint}</span></div>`;
+    }
+
+    const h = 26;
+    const pad = 2;
+    const t0 = raw[0].t;
+    const span = raw.at(-1).t - t0 || 1;
+    const values = raw.map((d) => d.p);
     const min = Math.min(...values);
     const max = Math.max(...values);
-    const span = max - min || 1;
-    const w = 100;
-    const h = 26;
-    const step = w / (pts.length - 1);
-    const path = pts
-      .map((p, i) => `${(i * step).toFixed(2)},${(h - ((p.p - min) / span) * (h - 4) - 2).toFixed(2)}`)
-      .join(' ');
-    const dropped = values.at(-1) < values[0]
-      ? 'var(--green)'
-      : values.at(-1) > values[0]
-        ? 'var(--orange)'
-        : 'var(--muted)';
-    const tag = pts.length >= 6 ? '近一年月低' : '近期走势';
+    const vspan = max - min || 1;
+    const x = (d) => ((d.t - t0) / span) * 100;
+    const y = (d) => pad + (h - pad * 2) - ((d.p - min) / vspan) * (h - pad * 2);
+
+    let path = `M 0 ${y(raw[0]).toFixed(2)}`;
+    for (let i = 1; i < raw.length; i++) {
+      path += ` L ${x(raw[i]).toFixed(2)} ${y(raw[i - 1]).toFixed(2)}`;
+      path += ` L ${x(raw[i]).toFixed(2)} ${y(raw[i]).toFixed(2)}`;
+    }
+
+    const first = raw[0].p;
+    const last = raw.at(-1).p;
+    const color = last < first ? 'var(--green)' : last > first ? 'var(--orange)' : 'var(--muted)';
+    const days = Math.round(span / 86400000);
+    const tag = days > 200 ? '近一年调价' : '近期调价';
+
     return `<div class="series"><span class="series-tag">${tag}</span><svg viewBox="0 0 100 ${h}" preserveAspectRatio="none">
-      <polyline points="${path}" fill="none" stroke="${dropped}" stroke-width="1.6" stroke-linejoin="round" />
+      <path d="${path}" fill="none" stroke="${color}" stroke-width="1.7" vector-effect="non-scaling-stroke" />
     </svg></div>`;
   }
 
   function card(item) {
     const isNew = item.flag === 'new_low';
-    const note = item.note ? `<div class="card-note" title="${esc(item.note)}">${esc(item.note)}</div>` : '';
     return `<article class="card${isNew ? ' is-newlow' : ''}" data-appid="${item.appid}">
       <div class="card-media">
         <div class="media-fallback" aria-hidden="true"><span>${esc(item.name)}</span></div>
@@ -435,11 +426,8 @@
         <div class="price-row">${priceBlock(item)}</div>
         ${lowBlock(item)}
         ${sparkline(item)}
-        ${note}
         <div class="card-actions">
           <a href="https://store.steampowered.com/app/${item.appid}/" target="_blank" rel="noopener">去 Steam</a>
-          <button type="button" data-act="pin" class="${item.pinned ? 'is-on' : ''}" data-appid="${item.appid}">${item.pinned ? '已置顶' : '置顶'}</button>
-          <button type="button" data-act="note" data-appid="${item.appid}">备注</button>
           <button type="button" data-act="remove" class="danger" data-appid="${item.appid}">删除</button>
         </div>
       </div>
@@ -601,8 +589,6 @@
           name: name || `AppID ${appid}`,
           header: header || headerOf(appid),
           added: new Date().toISOString(),
-          note: '',
-          pinned: false,
         });
       }, `feat(watchlist): add ${appid}`);
 
@@ -636,26 +622,6 @@
     });
   }
 
-  /** 应用内备注输入框，返回值：null=取消，''=清空 */
-  function askNote(current) {
-    const dlg = el('note-dialog');
-    const input = el('note-input');
-    input.value = current || '';
-    return new Promise((resolve) => {
-      const onClose = () => {
-        dlg.removeEventListener('close', onClose);
-        resolve(dlg.returnValue === 'ok' ? input.value : null);
-      };
-      dlg.addEventListener('close', onClose);
-      dlg.returnValue = '';
-      dlg.showModal();
-      requestAnimationFrame(() => {
-        input.focus();
-        input.select();
-      });
-    });
-  }
-
   async function handleRemove(appid) {
     if (!hasWriteAccess()) {
       openSettings();
@@ -677,65 +643,6 @@
       render();
     } catch (err) {
       toast(`移除失败：${ghErrorText(err)}`, 'err');
-    }
-  }
-
-  async function handlePin(appid) {
-    if (!hasWriteAccess()) {
-      openSettings();
-      return;
-    }
-    const target = (state.prices?.items ?? []).find((i) => i.appid === appid);
-    const next = !target?.pinned;
-    if (target) {
-      target.pinned = next;
-      render();
-    }
-    try {
-      await mutateWatchlist((list) => {
-        const item = list.items.find((i) => i.appid === appid);
-        if (!item) throw new Error('NOT_WATCHED');
-        item.pinned = next;
-      }, `chore(watchlist): pin ${appid}`);
-      toast(next ? '已置顶' : '已取消置顶');
-    } catch (err) {
-      if (target) {
-        target.pinned = !next;
-        render();
-      }
-      const msg = err.message === 'NOT_WATCHED' ? '这款游戏已不在关注列表里' : ghErrorText(err);
-      toast(`操作失败：${msg}`, 'err');
-    }
-  }
-
-  async function handleNote(appid) {
-    if (!hasWriteAccess()) {
-      openSettings();
-      return;
-    }
-    const target = (state.prices?.items ?? []).find((i) => i.appid === appid);
-    const value = await askNote(target?.note ?? '');
-    if (value === null) return;
-    const note = value.trim().slice(0, 60);
-    const prev = target?.note ?? '';
-    if (target && target.note !== note) {
-      target.note = note;
-      render();
-    }
-    try {
-      await mutateWatchlist((list) => {
-        const item = list.items.find((i) => i.appid === appid);
-        if (!item) throw new Error('NOT_WATCHED');
-        item.note = note;
-      }, `chore(watchlist): note ${appid}`);
-      toast(note ? '备注已保存' : '备注已清除');
-    } catch (err) {
-      if (target) {
-        target.note = prev;
-        render();
-      }
-      const msg = err.message === 'NOT_WATCHED' ? '这款游戏已不在关注列表里' : ghErrorText(err);
-      toast(`保存失败：${msg}`, 'err');
     }
   }
 
@@ -897,10 +804,7 @@
     el('grid').addEventListener('click', (e) => {
       const btn = e.target.closest('button[data-act]');
       if (!btn) return;
-      const appid = Number(btn.dataset.appid);
-      if (btn.dataset.act === 'pin') handlePin(appid);
-      if (btn.dataset.act === 'note') handleNote(appid);
-      if (btn.dataset.act === 'remove') handleRemove(appid);
+      if (btn.dataset.act === 'remove') handleRemove(Number(btn.dataset.appid));
     });
 
     el('empty-action').addEventListener('click', () => {
