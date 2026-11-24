@@ -1,21 +1,4 @@
 {
-  "413150": {
-    "uuid": "018d937e-f835-710c-b95b-928e277b187e",
-    "title": "Stardew Valley",
-    "shopId": 61,
-    "steamLowFlat": 1499,
-    "steamLow": {
-      "price": 1499,
-      "at": "2023-03-29"
-    },
-    "lowChecked": true,
-    "globalLow": {
-      "price": 1499,
-      "at": "2023-03-29",
-      "shop": "Steam"
-    },
-    "checked": "2026-11-24T07:00:15.136Z"
-  },
   "1091500": {
     "uuid": "018d937f-2997-7131-b8b9-7c8af4825fa8",
     "title": "Cyberpunk 2077",
