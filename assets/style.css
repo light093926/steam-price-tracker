@@ -742,6 +742,24 @@ button {
   display: block;
 }
 
+/* 新加的游戏还没有第二个数据点，用虚线占位说明，避免整块消失 */
+.series--empty {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 26px;
+  font-size: 11.5px;
+  color: var(--faint);
+  white-space: nowrap;
+}
+
+.series--empty::after {
+  content: '';
+  flex: 1 1 auto;
+  height: 0;
+  border-top: 1px dashed var(--line);
+}
+
 .card-actions {
   display: flex;
   gap: 6px;
@@ -1114,6 +1132,12 @@ dialog::backdrop {
 
   .app {
     padding: 0 12px calc(22px + var(--safe-bottom));
+  }
+
+  /* 顶栏贴到屏幕两边：否则吸顶时左右各露 12px 缝，下面内容会从缝里透出来 */
+  .topbar {
+    margin: 0 -12px;
+    padding: 14px 12px 12px;
   }
 
   .brand h1 {

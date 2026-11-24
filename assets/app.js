@@ -295,6 +295,8 @@
     if (item.flag === 'no_data') {
       return `<span class="badge badge--muted">${state.prices?.itad ? '暂无史低数据' : '史低未启用'}</span>`;
     }
+    // 原价没折扣时也给个中性徽标，避免封面一个标签都没有
+    if (!item.free && !(item.cut > 0)) return '<span class="badge badge--muted">原价</span>';
     return '';
   }
 
@@ -355,7 +357,10 @@
 
   function sparkline(item) {
     const pts = (item.series ?? []).filter((p) => Number.isFinite(p.p));
-    if (pts.length < 2) return '';
+    if (pts.length < 2) {
+      // 只有 1 个点或还没记录时给虚线占位，让用户知道曲线在积累而不是坏了
+      return `<div class="series series--empty"><span>${pts.length ? '价格曲线积累中' : '刚开始记录价格'}</span></div>`;
+    }
     const values = pts.map((p) => p.p);
     const min = Math.min(...values);
     const max = Math.max(...values);
