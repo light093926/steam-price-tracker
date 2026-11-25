@@ -53,6 +53,10 @@
 
   const yen = (cents) => (Number.isFinite(cents) ? `¥${(cents / 100).toFixed(2)}` : '—');
 
+  /** 搜索建议的副标题。索引里只存了价格，没存发售日 */
+  const priceHint = (hit) =>
+    hit.price === 0 ? '免费' : Number.isFinite(hit.price) ? yen(hit.price) : '';
+
   const norm = (s) => String(s || '').toLowerCase().replace(/[\s\-_:·'’"()（）[\]【】]/g, '');
 
   function relativeTime(iso) {
@@ -218,7 +222,14 @@
     state.catalogLoaded = true;
     try {
       const json = await loadJson('data/catalog.json');
-      state.catalog = Array.isArray(json.items) ? json.items : [];
+      const raw = Array.isArray(json.items) ? json.items : [];
+      // 索引是 [appid, 名称, 价格分] 的紧凑数组；预先算好归一化名字，3 万条下逐键搜索才不卡
+      state.catalog = raw.map((it) => {
+        const appid = Array.isArray(it) ? it[0] : it.appid;
+        const name = Array.isArray(it) ? it[1] : it.name;
+        const price = Array.isArray(it) ? it[2] : it.price;
+        return { appid, name, price, key: norm(name) };
+      });
       if (!state.catalog.length) console.warn('[catalog] 索引为空，只能按 AppID / 链接添加');
     } catch (err) {
       console.warn('[catalog] 读取失败', err.message);
@@ -500,7 +511,7 @@
     if (!q) return [];
     const scored = [];
     for (const item of state.catalog) {
-      const name = norm(item.name);
+      const name = item.key;
       if (name.includes(q)) {
         scored.push({ item, score: name.startsWith(q) ? 0 : 1, len: name.length });
         if (scored.length > 400) break;
@@ -534,9 +545,7 @@
       for (const hit of hits) {
         rows.push(`<li data-add="${hit.appid}" data-name="${esc(hit.name)}" data-header="${esc(hit.img || '')}">
           <img src="${esc(hit.img || headerOf(hit.appid))}" alt="" loading="lazy" onerror="this.remove()" />
-          <div class="meta"><strong>${esc(hit.name)}</strong><span>${esc(hit.released || '')}${
-            hit.free ? ' · 免费' : hit.price != null ? ` · ${yen(hit.price)}` : ''
-          }</span></div>
+          <div class="meta"><strong>${esc(hit.name)}</strong><span>${priceHint(hit)}</span></div>
           <span class="tag">${watched.has(hit.appid) ? '已关注' : '添加'}</span></li>`);
       }
     }
@@ -545,9 +554,13 @@
       const hint = !state.catalogLoaded
         ? '正在加载本地索引…'
         : state.catalog.length
-          ? '没找到匹配的游戏，可粘贴 Steam 商店链接或直接输入 AppID'
+          ? '本地索引里没有匹配项，可粘贴 Steam 商店链接或输入 AppID'
           : '搜索索引还没生成，请粘贴商店链接或输入 AppID';
-      box.innerHTML = `<li class="hint">${hint}</li>`;
+      // 本地索引只认商店正式名（部分游戏商店里就是英文名），Steam 自己的搜索认中文别名，给个跳转兜底
+      const steamLink = state.catalogLoaded
+        ? `<a href="https://store.steampowered.com/search/?term=${encodeURIComponent(raw)}&cc=cn&l=schinese" target="_blank" rel="noopener">在 Steam 商店搜「${esc(raw)}」</a>`
+        : '';
+      box.innerHTML = `<li class="hint">${hint}${steamLink ? `<br />${steamLink}` : ''}</li>`;
     } else {
       box.innerHTML = rows.join('');
     }

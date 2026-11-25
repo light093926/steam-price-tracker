@@ -2,7 +2,7 @@ name: build-catalog
 
 on:
   schedule:
-    - cron: '17 3 * * *' # 每天 UTC 03:17（北京时间 11:17）
+    - cron: '17 3 * * 1' # 每周一 UTC 03:17（北京时间 11:17）：索引 1.5MB，逐日重建会把仓库迅速撑大
   workflow_dispatch:
 
 permissions:
@@ -11,7 +11,7 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 40
     steps:
       - uses: actions/checkout@v4
 
