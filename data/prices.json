@@ -1,5 +1,5 @@
 {
-  "generated": "2026-11-24T22:47:44.103Z",
+  "generated": "2026-11-25T00:33:25.122Z",
   "currency": "CNY",
   "itad": true,
   "items": [
@@ -286,7 +286,7 @@
           "p": 1560
         },
         {
-          "t": "2026-11-24T22:47:44.103Z",
+          "t": "2026-11-25T00:33:25.122Z",
           "p": 3900
         }
       ]
@@ -424,12 +424,78 @@
         {
           "t": "2026-11-24T08:35:23.978Z",
           "p": 26800
+        },
+        {
+          "t": "2026-11-25T00:33:25.122Z",
+          "p": 26800
+        }
+      ]
+    },
+    {
+      "appid": 814380,
+      "name": "Sekiro™: Shadows Die Twice - GOTY Edition",
+      "name_en": "Sekiro™: Shadows Die Twice - GOTY Edition",
+      "header": "https://cdn.akamai.steamstatic.com/steam/apps/814380/header.jpg",
+      "store_url": "https://store.steampowered.com/app/814380/",
+      "free": false,
+      "unavailable": false,
+      "now": 26800,
+      "initial": 26800,
+      "cut": 0,
+      "currency": "CNY",
+      "steam_low": {
+        "price": 13400,
+        "at": "2026-10-01"
+      },
+      "global_low": {
+        "price": 13400,
+        "at": "2021-06-24",
+        "shop": "Steam"
+      },
+      "low_source": "steam",
+      "flag": "none",
+      "diff_pct": 100,
+      "stale": false,
+      "note": "",
+      "pinned": false,
+      "series": [
+        {
+          "t": "2025-12-18T21:14:23+01:00",
+          "p": 13400
+        },
+        {
+          "t": "2026-01-05T19:50:22+01:00",
+          "p": 26800
+        },
+        {
+          "t": "2026-03-19T18:27:43+01:00",
+          "p": 13400
+        },
+        {
+          "t": "2026-03-26T18:36:37+01:00",
+          "p": 26800
+        },
+        {
+          "t": "2026-06-25T19:20:53+02:00",
+          "p": 13400
+        },
+        {
+          "t": "2026-07-09T19:35:16+02:00",
+          "p": 26800
+        },
+        {
+          "t": "2026-10-01T19:24:54+02:00",
+          "p": 13400
+        },
+        {
+          "t": "2026-10-15T19:17:44+02:00",
+          "p": 26800
         }
       ]
     }
   ],
   "stats": {
-    "total": 6,
+    "total": 7,
     "on_sale": 1,
     "at_low": 2,
     "new_low": 0
