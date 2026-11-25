@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-24T08:34:57.455Z",
+  "updated": "2026-11-25T00:33:10.974Z",
   "items": [
     {
       "appid": 2358720,
@@ -46,6 +46,12 @@
       "name": "影之刃零",
       "header": "https://cdn.akamai.steamstatic.com/steam/apps/4115450/header.jpg",
       "added": "2026-11-24T08:34:57.455Z"
+    },
+    {
+      "appid": 814380,
+      "name": "Sekiro™: Shadows Die Twice - GOTY Edition",
+      "header": "https://cdn.akamai.steamstatic.com/steam/apps/814380/header.jpg",
+      "added": "2026-11-25T00:33:10.974Z"
     }
   ]
 }
