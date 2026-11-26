@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-26T05:14:21.719Z",
+  "updated": "2026-11-26T05:25:50.920Z",
   "items": [
     {
       "appid": 2358720,
@@ -58,6 +58,12 @@
       "name": "英雄传说：闪之轨迹Ⅳ",
       "header": "https://cdn.akamai.steamstatic.com/steam/apps/1198090/header.jpg",
       "added": "2026-11-26T05:14:21.719Z"
+    },
+    {
+      "appid": 1457510,
+      "name": "英雄传说 闪之轨迹IV -THE END OF SAGA-",
+      "header": "https://cdn.akamai.steamstatic.com/steam/apps/1457510/header.jpg",
+      "added": "2026-11-26T05:25:50.920Z"
     }
   ]
 }
